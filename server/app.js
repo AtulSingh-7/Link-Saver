@@ -12,7 +12,7 @@ const app = express(); // ✅ DEFINE app first!
 // ✅ Then use cors
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://link-saver-lime.vercel.app/'
+  'https://link-saver-lime.vercel.app'
 ];
 
 app.use(cors({

@@ -11,7 +11,9 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      console.log(email, password);
       const res = await API.post('/auth/login', { email, password });
+      console.log(res);
       setToken(res.data.token);
       navigate('/dashboard');
     } catch (err) {

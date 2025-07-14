@@ -9,8 +9,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" />} />
-        <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route
           path="/dashboard"
           element={isLoggedIn() ? <Dashboard /> : <Navigate to="/login" />}

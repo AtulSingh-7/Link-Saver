@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../api';
 import { setToken } from '../auth';
+import Signup from './Signup';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -45,12 +46,13 @@ function Login() {
           Login
         </button>
       </form>
-      <p className="text-sm mt-2">
+      {/* <p className="text-sm mt-2">
         Don't have an account?{' '}
         <a href="/signup" className="text-blue-500 underline">
           Sign up here
         </a>
-      </p>
+      </p> */}
+      <Signup />
     </div>
   );
 }

@@ -5,17 +5,19 @@ import Dashboard from './pages/Dashboard';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
+  const { token } = useAuth();
+
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/" element={token ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route
             path="/dashboard"
             element={
-              useAuth().token ? <Dashboard /> : <Navigate to="/login" />
+              token ? <Dashboard /> : <Navigate to="/login" />
             }
           />
         </Routes>

@@ -1,17 +1,27 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import API from '../api';
 import BookmarkCard from '../components/BookmarkCard';
 import Navbar from '../components/Navbar';
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [url, setUrl] = useState('');
   const [bookmarks, setBookmarks] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    }
+  }, [navigate]);
 
   const fetchBookmarks = async () => {
     const res = await API.get('/bookmarks');
     setBookmarks(res.data);
   };
+
 
   useEffect(() => {
     fetchBookmarks();

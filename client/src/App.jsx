@@ -17,7 +17,7 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              localStorage.getItem('token') ? <Dashboard /> : <Navigate to="/login" />
+              <Dashboard /> 
             }
           />
         </Routes>

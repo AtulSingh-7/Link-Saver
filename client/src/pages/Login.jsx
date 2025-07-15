@@ -11,21 +11,16 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-
-    if(localStorage.getItem('token')){
-      navigate('/dashboard');
-    }
-    else{
     e.preventDefault();
     try {
-      const res = await API.post('/auth/login', { email, password });
-
-
-      if (res.status !== 200) {
-        throw new Error('Unexpected response status');
+      if(localStorage.getItem('token')){
+        navigate('/dashboard');
+        return;
       }
+      
+      const res = await API.post('/auth/login', { email, password });
       let token = res?.data?.token;
-  
+
       // If token is missing, wait max 2s for it
       if (!token) {
         const start = Date.now();

@@ -18,6 +18,10 @@ function Signup() {
       
       if (res.status === 201 && res.data.token) {
         login(res.data.token);         // ✅ set token in localStorage
+        
+        // Add a small delay to ensure token is properly stored
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         navigate('/dashboard');        // ✅ go to dashboard
       } else {
         alert('Signup succeeded but no token received.');

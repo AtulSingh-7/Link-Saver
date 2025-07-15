@@ -11,8 +11,10 @@ function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
+      console.log(email, password);
       const res = await API.post('/auth/register', { email, password });
       setToken(res.data.token);
+      console.log(res);
       navigate('/dashboard');
     } catch (err) {
       alert(err.response?.data?.message || 'Signup failed');

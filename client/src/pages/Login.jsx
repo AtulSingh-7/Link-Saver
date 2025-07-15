@@ -7,10 +7,15 @@ import Signup from './Signup';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useAuth();
+  const { login,isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
+
+    if(localStorage.getItem('token')){
+      navigate('/dashboard');
+    }
+    else{
     e.preventDefault();
     try {
       const res = await API.post('/auth/login', { email, password });
@@ -39,6 +44,7 @@ function Login() {
       navigate('/dashboard');
     } catch (err) {
       alert(err.response?.data?.message || 'Login failed');
+    }
     }
   };
 

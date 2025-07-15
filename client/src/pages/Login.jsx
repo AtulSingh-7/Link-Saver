@@ -41,12 +41,8 @@ function Login() {
       alert(err.response?.data?.message || 'Login failed');
     }
     }
-  };
 
-
-
-  
-
+    
   return (
     <div className="p-4 max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-4">Login</h2>
@@ -86,5 +82,11 @@ function Login() {
     </div>
   );
 }
+
+
+
+  
+
+
 
 export default Login;

@@ -17,15 +17,17 @@ function Signup() {
       if (res.status !== 200) {
         throw new Error('Unexpected response status');
       }
+      console.log(res);
       let token = res?.data?.token;
 
 
-      
+      console.log(token);
       if (!token) {
         const start = Date.now();
         while (!token && Date.now() - start < 10000) {
           await new Promise((r) => setTimeout(r, 100));
           token = res?.data?.token;
+          console.log(token);
         }
       }
       if (!token) {
@@ -36,7 +38,7 @@ function Signup() {
       console.log(res);
       navigate('/dashboard');
     } catch (err) {
-      alert(err.response?.data?.message || 'Signup failed');
+      // alert(err.response?.data?.message || 'Signup failed');
     }
   };
 

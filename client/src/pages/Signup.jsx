@@ -13,7 +13,26 @@ function Signup() {
     try {
       console.log(email, password);
       const res = await API.post('/auth/register', { email, password });
-      setToken(res.data.token);
+      
+      if (res.status !== 200) {
+        throw new Error('Unexpected response status');
+      }
+      let token = res?.data?.token;
+
+
+      
+      if (!token) {
+        const start = Date.now();
+        while (!token && Date.now() - start < 10000) {
+          await new Promise((r) => setTimeout(r, 100));
+          token = res?.data?.token;
+        }
+      }
+      if (!token) {
+        alert('Login failed: No token received.');
+        return;
+      }
+      setToken(token);
       console.log(res);
       navigate('/dashboard');
     } catch (err) {

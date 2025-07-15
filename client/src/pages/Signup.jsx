@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../api';
-import { setToken } from '../auth';
+import { useAuth } from '../authContext';
 
 function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
@@ -13,33 +14,18 @@ function Signup() {
     try {
       console.log(email, password);
       const res = await API.post('/auth/register', { email, password });
+
       
-      if (res.status !== 200) {
-        throw new Error('Unexpected response status');
+      if (res.status === 201 && res.data.token) {
+        login(res.data.token);         // ✅ set token in localStorage
+        navigate('/dashboard');        // ✅ go to dashboard
+      } else {
+        alert('Signup succeeded but no token received.');
       }
-      console.log(res);
-      let token = res?.data?.token;
-
-
-      console.log(token);
-      if (!token) {
-        const start = Date.now();
-        while (!token && Date.now() - start < 10000) {
-          await new Promise((r) => setTimeout(r, 100));
-          token = res?.data?.token;
-          console.log(token);
-        }
-      }
-      if (!token) {
-        alert('Login failed: No token received.');
-        return;
-      }
-      setToken(token);
-      console.log(res);
-      navigate('/dashboard');
     } catch (err) {
-      // alert(err.response?.data?.message || 'Signup failed');
+      alert(err.response?.data?.message || 'Signup failed');
     }
+
   };
 
   return (

@@ -70,13 +70,18 @@ function Login() {
           Login
         </button>
       </form>
-      {/* <p className="text-sm mt-2">
+      <p className="text-sm mt-2">
         Don't have an account?{' '}
         <a href="/signup" className="text-blue-500 underline">
           Sign up here
         </a>
-      </p> */}
-      <Signup />
+      </p>
+      {/* <Signup /> */}
+
+      <p className='text-sm mt-2 mt-10 font-bold'> Note : Server is hosted on render(free tier ) and takes time to start on first request , Please wait for 1-2 minutes   </p>
+      <p className='text-sm mt-2 font-bold'>
+        Thank you for the patience !
+      </p>
     </div>
   );
 }

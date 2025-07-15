@@ -13,12 +13,28 @@ function Login() {
     e.preventDefault();
     try {
       const res = await API.post('/auth/login', { email, password });
-      const token = res.data.token;
+
+
+      if (res.status !== 200) {
+        throw new Error('Unexpected response status');
+      }
+      let token = res?.data?.token;
+  
+      // If token is missing, wait max 2s for it
+      if (!token) {
+        const start = Date.now();
+        while (!token && Date.now() - start < 10000) {
+          await new Promise((r) => setTimeout(r, 100));
+          token = res?.data?.token;
+        }
+      }
       if (!token) {
         alert('Login failed: No token received.');
         return;
       }
       login(token); // save to context + localStorage
+      // sleep for 1 second
+      await new Promise((r) => setTimeout(r, 1000));
       navigate('/dashboard');
     } catch (err) {
       alert(err.response?.data?.message || 'Login failed');

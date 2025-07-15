@@ -7,20 +7,56 @@ import Signup from './Signup';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    // setLoading(true);
+  
     try {
-      console.log(email, password);
       const res = await API.post('/auth/login', { email, password });
-      console.log(res);
-      setToken(res.data.token);
+  
+      // Defensive: Check status code
+      if (res.status !== 200) {
+        throw new Error('Unexpected response status');
+      }
+  
+      let token = res?.data?.token;
+  
+      // If token is missing, wait max 2s for it
+      if (!token) {
+        const start = Date.now();
+        while (!token && Date.now() - start < 10000) {
+          await new Promise((r) => setTimeout(r, 100));
+          token = res?.data?.token;
+        }
+      }
+  
+      // Still no token after waiting?
+      if (!token) {
+        alert('Login failed: Token missing from server.');
+        return;
+      }
+  
+      // Token received — continue
+      setToken(token);
       navigate('/dashboard');
+  
     } catch (err) {
-      alert(err.response?.data?.message || 'Login failed');
+      console.error('Login error:', err);
+  
+      // Handle error from backend response
+      if (err.response?.status === 401) {
+        alert('Incorrect email or password.');
+      } else {
+        alert(err.response?.data?.message || err.message || 'Login failed');
+      }
+    } finally {
+      setLoading(false);
     }
   };
+  
 
   return (
     <div className="p-4 max-w-md mx-auto">
